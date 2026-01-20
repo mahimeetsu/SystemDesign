@@ -1,0 +1,283 @@
+SOLID:
+------
+
+SOLID is a set of 5 Object Oriented Design Principles that helps in
+	->writing clean code
+	->Redude tight coupling
+	->improve scalability
+	->easy to test
+	
+S-Single Responsibility
+0-Open/Closed
+L-Liskov Substitution
+I-Interface Segregation
+D-Dependency Inversion
+
+=============================
+Single Responsibility:
+----------------------
+	A class should have only one reason to change.
+	
+Bad Example (Multiple Responsibilities)
+class UserService {
+    public void registerUser(String username) {
+        // business logic
+        System.out.println("User registered");
+    }
+
+    public void sendEmail(String email) {
+        // email logic
+        System.out.println("Email sent");
+    }
+}
+
+
+❗ Problem:
+
+Business logic + Email logic mixed
+
+Hard to modify or test independently
+
+✅ Good Example (SRP Applied)
+
+class UserService {
+    public void registerUser(String username) {
+        System.out.println("User registered");
+    }
+}
+
+class EmailService {
+    public void sendEmail(String email) {
+        System.out.println("Email sent");
+    }
+}
+
+
+✔ Each class has one responsibility
+
+========================
+
+2.Open/Closed Principle:(OCP)
+--------------------------------
+Software Entities should be open for extension and closed for modification.
+
+Bad Example:
+
+class DiscountService
+{
+	public int getDiscount(String type)
+	{
+		if(type.equals("STUDENT"))
+			return 10;
+		if(type.equals("SENIOR"))
+			return 15;
+		return 0;
+	}	
+}	
+
+Problem here is for every new discount, we need a modification in the class.
+
+Good Example:
+
+interface Discount
+{
+	int getDiscount();
+}
+class StudentDiscount implements Discount
+{
+	public int getDiscount()
+	{
+		return 10;
+	}
+}
+class SeniorDiscount implements Discount
+{
+	public int getDiscount()
+	{
+		return 15;
+	}
+}
+class DiscountService
+{
+	int calculate(Discount discount)
+	{
+		return discount.getDiscount();
+	}
+}
+
+Benfit is , we can add new feature without touching existing classes like StudentDiscount and SeniorDiscount.
+
+==================
+
+Liskov Substitution Principle:
+-----------------------------
+	A child class is usable whenever its parent class is expected.
+	
+Bad Example:
+
+class Bird {
+    void fly() {
+        System.out.println("Flying");
+    }
+}
+
+class Ostrich extends Bird {
+    void fly() {
+        throw new UnsupportedOperationException("Cannot fly");
+    }
+}
+
+❗ Ostrich breaks parent behavior
+
+Good Example:
+
+interface Bird { }
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void fly() {
+        System.out.println("Flying");
+    }
+}
+
+class Ostrich implements Bird {
+    // no fly method
+}
+
+✔ No broken inheritance contracts
+
+=============================
+
+Interface Segregation Principle:
+-------------------------------
+
+Client should not be forced to depend on methods they do not use.
+
+interface Worker
+{
+void work();
+void eat();
+}
+//this is fine
+class Human implements Worker
+{
+public void work()
+{}
+public void eat()
+{}
+}
+//here Robot no need to use eat method.But we  have to force to use bacase of interface implementation
+class Robot implements Worker
+{
+public void work()
+{}
+//no need
+public void eat()
+{}
+}
+
+Good Example:
+
+interface Workable
+{
+void work();
+}
+interface Eatable
+{
+void eat();
+}
+class Human implements Workable,Eatable
+{
+public void work()
+{}
+public void eat()
+{}
+}
+class Robot implements Workable
+{
+public void work()
+{}
+}
+
+✔ Clean & relevant interfaces
+
+==================
+
+D-Dependency Inversion Principle:
+--------------------------------
+
+Depends on abstration ,not concrete classes
+
+Bad Example:
+
+class MySQLDatabase
+{
+	void connect()
+	{
+		System.out.println("connected to MYSQL DB");
+	}
+}
+class UserRepository
+{
+private MySQLDatabase dbObj=new MySQLDatabase();
+
+void save()
+{
+dbObj.connect();
+}
+}
+
+Tightly coupled to MySql.
+
+Good Example:
+
+interface Database
+{
+void connect();
+}
+class MySQLDatabase implements Database
+{
+	public void connect()
+	{
+		System.out.println("connected to SQL Database");
+	}
+}
+class MongoDatabase implements Database
+{
+	public void connect()
+	{
+		System.out.println("connected to Mongo Database");
+	}
+}
+class UserRepository
+{
+Database database;
+
+UserRepository(Database database)
+{
+this.database=database;
+}
+
+void save()
+{
+database.connect();
+}
+}
+
+✔ Easily switch databases
+✔ Perfect for Spring Dependency Injection
+
+========================
+
+SOLID Summary
+=============
+Principle	Meaning
+SRP	One class → One responsibility
+OCP	Extend without modifying
+LSP	Subclasses must behave correctly
+ISP	Small, focused interfaces
+DIP	Depend on abstractions
+
