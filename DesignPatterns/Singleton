@@ -1,0 +1,132 @@
+Singleton Design Pattern:
+-------------------------
+	Singleton pattern ensures only one instance of the class exists in the entire application.
+	
+when to use:
+	->exactly one object is needed.
+	->Shared resources must be controlled.
+	->state must be consistent accross the application.
+	
+Realtime usecases:
+------------------
+->database connection manager
+->logger
+->configuration manager
+->Cache Manager
+->Thread pool manager
+
+
+Database Connection Manager Example:
+-----------------------------------
+
+Problem without Singleton pattern is Multple database object created and leads to resource leak / performance issues.
+
+Solution using Singleton Pattern:
+
+Eager Loading:Simple and Thread Safe
+
+DatabaseConnection.java:
+
+package com.design;
+
+public class DatabaseConnection {
+	private static final DatabaseConnection dbConnectonInstance = new DatabaseConnection();
+
+	// private construction to prevent external instantiation
+	private DatabaseConnection() {
+
+	}
+
+	public static DatabaseConnection getConnection() {
+		return dbConnectonInstance;
+	}
+
+	public void connect() {
+		System.out.println("Conntected to db:");
+	}
+}
+
+Main class:
+
+package com.design;
+
+public class UseDbConnection {
+	public static void main(String[] args) {
+		// DatabaseConnection obj=new DatabaseConnection();//The constructor
+		// DatabaseConnection() is not visible
+		DatabaseConnection db1 = DatabaseConnection.getConnection();
+		DatabaseConnection db2 = DatabaseConnection.getConnection();
+		db1.connect();
+		System.out.println(db1 == db2);
+	}
+}
+
+
+
+================
+
+Lazy Initialization:
+-------------------
+
+package com.design;
+
+public class LazyLoad {
+	// private instance ,because it can be accessed by only getInstance method
+	private static LazyLoad instance;
+
+	private LazyLoad() {
+
+	}
+
+	// public method to return instance
+	public static LazyLoad getInstance() {
+		if (instance == null) {
+			instance = new LazyLoad();
+		}
+		return instance;
+	}
+
+}
+
+issue: Multple threads may create multple instances.
+
+==============
+
+Thread Safe Singleton (Double-Checked Locking)
+
+Most used Real projects:
+
+package com.design;
+
+public class ThreadSafeSingleton {
+
+	private static ThreadSafeSingleton singletonInstance;
+
+	private ThreadSafeSingleton() {
+
+	}
+
+	public static ThreadSafeSingleton getInstance() {
+		if (singletonInstance == null) {
+			synchronized (ThreadSafeSingleton.class) {
+				if (singletonInstance == null) {
+					singletonInstance = new ThreadSafeSingleton();
+				}
+			}
+		}
+
+		return singletonInstance;
+	}
+}
+
+=========
+Singleton in Spring Boot (Real World)
+
+In Spring, beans are Singleton by default:
+
+@Service
+public class UserService {
+}
+
+
+Only one instance per Spring container is created.
