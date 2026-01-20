@@ -1,0 +1,141 @@
+Facade Design Pattern:
+---------------------
+	Facade pattern provides a simple,unified interface to a complex subsystem.
+	It hides internal complexity and makes the system easy to use and loosely coupled.
+	
+Real-Time Use Case:
+
+Online Shopping-Order placement:
+------------------------------
+	when user places an order , multiple subsystems are involved.
+->inventory check
+->order management
+->shipping arrangment
+->Notification service
+
+	->without Facade pattern, a client must talk to all subsystems directly(tight coupling)
+	
+	
+Without Facade(Problem)
+-----------------------
+
+class OrderClient
+{
+ public static void main(String args[])
+ {
+	InventoryService inventory=new InventoryService();
+	PaymentService payment=new PaymentService();
+	ShippingService shipping=new ShippingService();
+	NotificationService notification=new NotificationService();
+	
+	inventory.checkStock("IPhone");
+	payment.makePayment("CreditCard",1000);
+	shipping.shipProduct("IPhone");
+	notification.sendNotification();
+ }
+}
+
+Problems:
+--------
+Client knows too much.
+Hard to maintain.
+Difficult to change subsystem logic.
+
+With Facade pattern(Solution)
+-----------------------------
+
+subsystems classes:
+
+class InventoryService
+{
+ public void checkStock(String product)
+ {
+  System.out.println("Checking stock for :"+product);
+  }
+}
+
+class PaymentService
+{
+ public void makePayment(String type,double amt)
+  {
+	System.out.println("Processing :"+type+" payment $"+amt);
+ }
+}
+
+class ShippingService
+{
+ public void shipProduct(String product)
+  {
+	System.out.println("Shipping product:"+product);
+ }
+}
+
+class NotificationService
+{
+ public void sendNotification(String message)
+  {
+   System.out.println("Notification sent:+"message);
+   }
+}
+
+Facade class:(Simplied class)
+-----------------------------
+
+class OrderFacade
+{
+	private InventoryService inventory;
+	private PaymentService payment;
+	private ShippingService shipping;
+	private NotificationService notification;
+	
+	OrderFacade()
+	{
+	this.inventory=new InventoryService();
+	this.payment=new PaymentService();
+	this.shipping=new ShippingService();
+	this.notification=new NotificationService();
+	}
+	
+	public void placeOrder(String product,String type,double amt)
+	{
+	inventory.checkStock(product);
+	payment.makePayment(type,amt);
+	shipping.shipProduct(product);
+	notification.sendNotification("Order placed Successfully:+"product);
+	}
+}
+
+client code(simple and clean)
+---------------------------
+
+class Client
+{
+	public static void main(String args[])
+	{
+		OrderFacade facade=new OrderFacade();
+		facade.placeOrder("IPhone","CreditCard",1000);
+	}
+}
+
+
+Output:
+
+Checking stock for iPhone
+Processing Credit Card payment of $1200
+Shipping product: iPhone
+Notification sent: Order placed successfully for iPhone
+
+
+Benefits of Facade
+
+✅ Red offers a single entry point
+✅ Reduces coupling
+✅ Improves readability & maintainability
+✅ Makes legacy systems easier to use
+
+Note:
+Facade pattern provides a simplified interface to complex subsystems, improving usability and reducing coupling.
+
+
+
+	
