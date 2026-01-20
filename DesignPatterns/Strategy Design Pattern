@@ -1,0 +1,107 @@
+Strategy Design Pattern:
+-----------------------
+	Strategy pattern defines a family of algorithms ,encapsulates each one,and makes them interchangeble at
+runtime.
+
+Select an algorithm behaviour at runtime without modifying the client.
+
+Real Time use case:
+-----------------
+
+An e-commerce application supports multple payment methods.
+
+1.Credit Card
+2.UPI
+3.Paypal
+
+Without Strategy Pattern(Problem)
+---------------------------------
+
+class PaymentService
+{
+ public void pay(String type,double amt)
+ {
+	if(type.equals("Credit"))
+		System.out.prnitln("Payment via credit card:"+amt);
+	else if(type.equals("UPI"))
+		System.out.prnitln("Payment via credit card:"+UPI);
+	else if(type.equals("Paypal"))
+		System.out.prnitln("Payment via credit card:"+Paypal);
+  }
+}
+
+problems:
+
+->voilates open/closed principle
+->Hard to extent
+->Difficult to test
+
+Using Strategy pattern(Solution)
+--------------------------------
+
+interface PaymentStrategy
+{
+ void pay(double amt);
+}
+
+class CreditCardPayment implements PaymentStrategy
+{
+public void pay(double amt)
+{
+	System.out.prnitln("amount +" amt+" paid with credit card");
+}
+}
+class UpiPayment implements PaymentStrategy{
+{
+{
+public void pay(double amt)
+{
+	System.out.prnitln("amount +" amt+" paid with upi");
+}
+}
+class PayPal implements PaymentStrategy{
+{
+{
+public void pay(double amt)
+{
+	System.out.prnitln("amount +" amt+" paid with PayPal");
+}
+}
+
+Context class:(strategy)
+-------------------------
+
+class PaymentContext
+{
+	private PaymentStrategy paymentStrategy;
+	
+	public PaymentContext(PaymentStrategy paymentStrategy)
+	{
+		this.paymentStrategy=paymentStrategy;
+	}
+	
+	public void executePayment(double amt)
+	{
+		paymentStrategy.pay(amt);
+	}
+}
+
+
+Client code:runtime selection
+
+class Client
+{
+	public static void main(String args[])
+	{
+		PaymentContext context=new PaymentContext(new CreditCardPayment());
+		context.executePayment(100);
+		PaymentContext context=new PaymentContext(new UpiPayment());
+		context.executePayment(100);
+		PaymentContext context=new PaymentContext(new Paypal());
+		context.executePayment(100);
+	}
+}
+
+
+
+
