@@ -1,0 +1,164 @@
+Authentication and Authorization:
+---------------------------------
+Authentication:
+	it checks who are you.
+Authorization:
+	it check what are you allowed to access.
+	
+Authentication verifies who the user is, while authorization determines what the authenticated user is 
+allowed to do. 
+Authentication happens first, authorization follows.
+
+
+Authentication is the process of validating a user’s identity using credentials like passwords, OTPs, 
+or OAuth tokens.
+Authorization is the process of checking whether that authenticated user has permission to access a 
+specific resource or perform an action.
+In distributed systems, authentication is often centralized, while authorization is enforced at the service 
+or API level.
+
+
+Authentication is the process of validating a user’s identity using credentials like passwords, OTPs, 
+or OAuth tokens.
+Authorization is the process of checking whether that authenticated user has permission to access a specific resource 
+or perform an action.
+In distributed systems, authentication is often centralized, while authorization is enforced at the service 
+or API level.
+
+In large-scale systems, authentication and authorization are treated as separate concerns.
+Authentication is typically handled by an identity provider or auth service that validates credentials
+ and issues a token like JWT or OAuth access token.
+Authorization is then enforced using roles, permissions, or policies—either at the API Gateway or within 
+each microservice.
+This separation allows us to scale authentication independently and apply fine-grained authorization rules 
+closer to the resource.
+
+HTTP Status Code Trick (Interviewers Love This)
+
+Authentication failures typically return 401 Unauthorized, indicating the user is not authenticated.
+Authorization failures return 403 Forbidden, meaning the user is authenticated but not allowed to access
+the resource.
+
+
+Real-World Example Answer
+
+In a banking system, authentication confirms the user’s identity during login.
+Authorization ensures that only managers can approve loans, while regular users can only view balances
+or transactions.
+
+Follow-Up Question They Often Ask
+
+“Can authorization happen without authentication?”
+
+🔥 FAANG-ready response:
+
+In most secure systems, authorization depends on authentication.
+However, public resources can allow anonymous access, which is effectively authorization without 
+authentication—but with very limited permissions.
+
+Common Authentication methods:
+-----------------------------
+Username+password
+OTP(sms,email)
+OAuth(Google, Githib login)
+JWT Token
+Session id
+Biometric(Faceid,finerprint)
+
+Flow:
+
+client sends credentials(username/password)
+Server verifies credentials
+Server issues token/session
+Client uses token in future requests.
+
+Post /login
+{
+"username":"mahesh",
+"password":"xxxxxx"
+}
+
+Result: User is authenticated
+
+Authorization:
+-------------
+	Authorization determines what actions/resources an authenticated user can access.
+
+"You are Mahesh,But can you delete users?"
+
+Common Authorization models:
+
+Role based Access control :USER,ADMIN,MANAGER
+Permission based: READ_ORDER,WRITE_ORDER
+Attribute-Based: Time,IP,Location
+
+Authorization flow:
+
+Authenticated user sends request and hit API.
+System checks role/permission
+System checks role/permissions
+
+Allow or deny access
+
+GET /admin/users
+Authorization: Bearer <JWT>
+
+
+❌ If role ≠ ADMIN → 403 Forbidden
+
+
+| Feature      | Authentication   | Authorization        |
+| ------------ | ---------------- | -------------------- |
+| Question     | Who are you?     | What can you do?     |
+| Happens      | First            | After authentication |
+| Depends on   | Credentials      | Roles / permissions  |
+| Failure Code | 401 Unauthorized | 403 Forbidden        |
+| Example      | Login            | Access admin API     |
+
+
+Real-World Example (Banking App)
+Authentication
+
+User logs in using username + OTP
+
+System confirms identity
+
+Authorization
+
+User can:
+
+✅ View balance
+
+❌ Approve loans (manager-only)
+
+
+Java + Spring Boot Example
+Authentication (JWT Filter)
+UsernamePasswordAuthenticationToken auth =
+    new UsernamePasswordAuthenticationToken(user, null, roles);
+
+Authorization
+@PreAuthorize("hasRole('ADMIN')")
+@GetMapping("/admin")
+public String adminAccess() {
+    return "Admin only";
+}
+
+
+In Microservices System Design
+Where They Live
+
+Authentication
+
+API Gateway
+
+Auth Service
+
+Authorization
+
+API Gateway
+
+Each Microservice (fine-grained)
+
+Authentication verifies identity; authorization determines access rights. 
+Authentication comes first, authorization follows.

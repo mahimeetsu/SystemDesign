@@ -1,0 +1,233 @@
+What is HTTP?
+
+HTTP (HyperText Transfer Protocol) is a protocol used for communication between client and server.
+
+👉 Data is sent in plain text.
+
+Client → HTTP Request → Server
+Client ← HTTP Response ← Server
+
+❌ Problem with HTTP
+
+Data can be read
+
+Data can be modified
+
+Data can be stolen
+
+Example risk:
+
+Passwords
+
+Tokens
+
+Credit card data
+
+What is HTTPS?
+
+HTTPS (HTTP Secure) is HTTP + Security.
+
+👉 Uses SSL/TLS encryption.
+
+Client → Encrypted Request → Server
+Client ← Encrypted Response ← Server
+
+Key Difference (Simple Table)
+HTTP	HTTPS
+Data is plain text	Data is encrypted
+Not secure	Secure
+Port 80	Port 443
+No certificate	Requires SSL/TLS certificate
+Vulnerable to attacks	Protected from attacks
+How HTTPS Works (Very Basic)
+
+Client connects to server
+
+Server sends SSL certificate
+
+Browser verifies certificate
+
+Secure encrypted connection created
+
+Data transferred safely
+
+👉 This happens before HTTP requests start
+
+Example (Java System)
+HTTP (Insecure)
+POST /login
+username=reddy&password=1234
+
+
+Anyone sniffing network can see this ❌
+
+HTTPS (Secure)
+POST /login
+<encrypted data>
+
+
+Data is unreadable ✅
+
+Why HTTPS is Important in System Design?
+
+Interviewers expect:
+
+All production systems use HTTPS
+
+Secure authentication
+
+Data integrity
+
+Trust between client and server
+
+Used for:
+
+Login APIs
+
+Payment systems
+
+Microservices (internal & external)
+
+HTTP vs HTTPS in Java Spring Boot
+Enable HTTPS (Concept)
+
+Install SSL certificate
+
+Configure server (Tomcat / Jetty)
+
+Redirect HTTP → HTTPS
+
+server.port=443
+server.ssl.enabled=true
+
+One-Line Interview Answer
+
+HTTP sends data in plain text and is not secure, while HTTPS uses SSL/TLS encryption to securely transmit data between client and server.
+
+Very Short Interview Comparison (1–2 Lines)
+
+HTTPS is the secure version of HTTP that encrypts communication to prevent data theft and tampering.
+
+What is HTTPS Handshake?
+
+The HTTPS handshake is the process where client and server establish a secure (encrypted) connection before any HTTP request/response is sent.
+
+👉 Goal:
+
+Verify server identity
+
+Agree on encryption keys
+
+Start secure communication
+
+HTTPS Handshake – Step by Step
+🔹 Step 1: Client Hello
+
+The client (browser / app) starts the connection.
+
+Client sends:
+
+Supported TLS versions
+
+Supported encryption algorithms (cipher suites)
+
+Random number (Client Random)
+
+Client → Server : "I want to connect securely"
+
+🔹 Step 2: Server Hello
+
+Server responds with:
+
+Chosen TLS version
+
+Chosen cipher suite
+
+Server Random
+
+SSL/TLS Certificate (Public Key)
+
+Server → Client : Certificate + encryption choice
+
+🔹 Step 3: Certificate Verification (Client Side)
+
+Client checks:
+
+Certificate is issued by a trusted CA
+
+Certificate is not expired
+
+Domain name matches
+
+❌ If invalid → connection rejected
+✅ If valid → continue
+
+🔹 Step 4: Key Exchange (Secret Creation)
+
+Client:
+
+Generates a Pre-Master Secret
+
+Encrypts it using server’s public key
+
+Sends it to the server
+
+Client → Server : Encrypted secret
+
+
+👉 Only server can decrypt it (has private key)
+
+🔹 Step 5: Session Key Generation
+
+Both client & server now independently generate:
+
+Session Key (symmetric key)
+
+They use:
+
+Client Random + Server Random + Pre-Master Secret
+
+🔹 Step 6: Secure Connection Established
+
+Handshake completed
+
+All communication now encrypted using session key
+
+Client ↔ Server : Encrypted HTTP data
+
+What Happens AFTER Handshake?
+
+Normal HTTP starts — but securely.
+
+GET /users/1
+Authorization: Bearer token
+
+
+👉 Data is encrypted, unreadable to attackers
+
+Why Use Public + Symmetric Keys?
+Key Type	Used For
+Public/Private	Secure key exchange
+Symmetric Key	Fast data encryption
+
+👉 Performance optimized + secure
+
+HTTPS Handshake in Java (Concept)
+
+In Java (Spring Boot / JVM):
+
+Handled by TLS layer
+
+Uses keystore & truststore
+
+Developers don’t write handshake code manually
+
+Java App → JVM → TLS → HTTPS
+
+One-Line Interview Answer
+
+The HTTPS handshake is the process where the client verifies the server’s identity, exchanges encryption keys using SSL/TLS, and establishes a secure encrypted connection before sending HTTP data.
+
+Ultra-Short Interview Version (Perfect)
+
+HTTPS handshake securely exchanges keys using certificates and establishes an encrypted session before HTTP communication begins.

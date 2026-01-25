@@ -1,0 +1,100 @@
+Request and Response:
+---------------------
+	->In System Design request/response is the communication model .
+	->client sends a request -> server processes it -> server sends response back to client.
+
+This is the foundation of web applicatins, micro services ,REST APIs and java backend systems.
+
+Request:
+-------
+	Request contains/represents following things.
+	
+1.HTTP Method(verb) : what action to perform
+	GET,POST,PUT,PATCH,DELETE
+	
+2.URL(Resource) (end point ): where request is going
+	/users/10
+	
+3.Headers:(Metadata)
+	Authorization
+	content type
+	Accept
+	
+4.Body(Optional)
+	JSON/XML(Mostly JSON for java)
+	
+System design meaning:
+“How the client tells the system what to do”
+
+Response:
+--------
+	Response is from server to client.
+	
+contains	->status code(success/faulure)	-> headers	->response body(result or error message).
+
+ex:
+HTTP/1.1 201 Created
+Contenty Type : applicatin/json
+
+{
+	"orderid": 5001
+	"status": "Confirmed"
+}
+
+
+System design meaning:
+“How the system communicates the result back”
+
+Simple Real-Life Example 🧠
+------------------------
+Restaurant Example
+Request: You order food
+Response: Waiter brings food
+You → Order → Kitchen → Food → You
+
+Basic System Design Flow
+Client
+ ↓ (Request)
+Server
+ ↓ (Process)
+Response
+ ↑
+Client
+
+Very Simple Technical Example
+-----------------------------
+Request
+GET /users/1
+
+Means:
+“Give me details of user with ID 1”
+
+Response
+{
+  "id": 1,
+  "name": "Reddy"
+}
+
+Means:
+
+“Here is the user data”
+
+Basic Components Involved:
+-------------------------
+Component	Role
+Client		Sends request
+Server		Processes request
+Database	Stores data
+Response	Result sent back
+
+Why Request–Response is Important?
+
+Client and server communicate
+
+System knows what action to perform
+
+Client knows result of action
+
+Without request–response:
+❌ No communication
+❌ No data exchange

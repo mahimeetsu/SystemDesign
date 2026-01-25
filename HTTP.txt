@@ -1,0 +1,160 @@
+HTTP:
+
+What is HTTP?
+
+HTTP (HyperText Transfer Protocol) is the communication protocol used by clients and servers to talk to each other in most backend systems.
+
+👉 In system design:
+
+HTTP defines how requests are sent and how responses are returned.
+
+Why HTTP is Important in System Design?
+
+Because:
+
+Clients (browser, mobile app) use HTTP
+
+Java backend servers (Spring Boot) expose HTTP APIs
+
+Microservices communicate over HTTP
+
+Without HTTP:
+❌ Client and server cannot communicate
+
+Basic HTTP Flow
+
+Client
+  ↓ HTTP Request
+Server
+  ↓ Process
+Server
+  ↑ HTTP Response
+Client
+
+HTTP in a Java System (Simple View)
+
+Browser / App
+   ↓ HTTP
+Spring Boot API
+   ↓
+Service Layer
+   ↓
+Database
+
+
+HTTP Request (Basic Structure)
+
+An HTTP request has 4 main parts:
+
+1️⃣ HTTP Method (Action)
+
+Defines what to do.
+
+Method	Meaning
+GET	Read data
+POST	Create data
+PUT	Update data
+DELETE	Remove data
+
+Example:
+
+GET /users/1
+
+URL (Resource)
+
+Defines what data.
+
+/api/users
+
+3️⃣ Headers (Metadata)
+
+Extra information about the request.
+
+Authorization: Bearer token
+Content-Type: application/json
+
+
+Used for:
+
+Security
+Content type
+
+Tracing
+
+4️⃣ Body (Data)
+
+Only for POST/PUT/PATCH.
+
+{
+  "name": "Reddy",
+  "email": "reddy@gmail.com"
+}
+
+HTTP Response (Basic Structure)
+
+An HTTP response has 3 main parts:
+
+1️⃣ Status Code (Result)
+
+Code	Meaning
+200	Success
+201	Created
+400	Bad Request
+401	Unauthorized
+404	Not Found
+500	Server Error
+
+Headers
+Content-Type: application/json
+
+3️⃣ Body (Result Data)
+{
+  "id": 1,
+  "name": "Reddy"
+}
+
+Simple Java Spring Boot Example
+
+erver (Spring Boot)
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable int id) {
+        return new User(id, "Reddy");
+    }
+}
+
+Client (Browser or App)
+GET /users/1
+
+HTTP is Stateless (Very Important)
+
+👉 Each request is independent
+
+Server does NOT remember previous requests
+
+All required data must be sent every time
+
+Example:
+
+Authentication token sent in every request
+
+HTTP in System Design (Interview Points)
+
+When you say HTTP, interviewers expect:
+
+Stateless communication
+
+Scalability (easy to scale servers)
+
+Clear request–response model
+
+Standard methods & status codes
+
+One-Line Interview Answer (Basic)
+
+HTTP is a stateless communication protocol used in system design that allows clients 
+and Java backend servers to exchange requests and responses using standard methods and status codes.
+
